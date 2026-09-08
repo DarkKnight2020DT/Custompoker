@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: custom-poker
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /data
+    disk:
+      name: custom-poker-data
+      mountPath: /data
+      sizeGB: 1

@@ -1,0 +1,11 @@
+import { DatabaseSync } from 'node:sqlite';
+import { mkdirSync } from 'node:fs';
+import path from 'node:path';
+const dataDir=process.env.DATA_DIR||path.resolve('data');
+const dbPath=process.env.DATABASE_PATH||path.join(dataDir,'custom-poker.sqlite');
+const backupDir=process.env.BACKUP_DIR||path.join(dataDir,'backups');
+mkdirSync(backupDir,{recursive:true});
+const stamp=new Date().toISOString().replaceAll(':','-').replaceAll('.','-');
+const out=path.join(backupDir,`custom-poker-${stamp}.sqlite`);
+const db=new DatabaseSync(dbPath);db.exec(`VACUUM INTO '${out.replaceAll("'","''")}'`);db.close();
+console.log(out);
